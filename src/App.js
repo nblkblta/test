@@ -1,38 +1,40 @@
 import './App.css';
 import PostsBody from "./Components/PostsBody";
 import AddForm from "./Components/AddForm";
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import PlaceHolderAPI from "./API/PlaceHolderAPI";
 import AquamarineSelect from "./UI/AquamarineSelect";
+import ModalView from "./Components/ModalView";
 function App() {
     const [posts, setPosts] = useState([]);
     const [isLoading, setLoading] = useState(true)
     const [postsOnPageLimit, setPostsOnPageLimit] = useState(10)
     const [currentPage, setCurrentPage] = useState(1)
     const [pages, setPages] = useState([1,2,3,4,5,6,7,8,9,10])
+    const [modalNumber, setModalNumber] = useState(0)
     const load = () => {
         setLoading(false);
     }
 
-    function getPosts(){
+    const getPosts = useCallback(()=>{
         PlaceHolderAPI.fetchPosts(postsOnPageLimit, currentPage)
             .then(response => setPosts(response.data))
             .then(setTimeout(load, 300))
             .catch(error=>alert(error.message))
-    }
-    function getPages(){
+    },[postsOnPageLimit, currentPage])
+    const getPages = useCallback(()=> {
         let pagesCount= Math.ceil(100/postsOnPageLimit)
         let pagesMass = []
         for(let i=0;i<pagesCount;i++){
             pagesMass[i]=i+1
         }
         setPages(pagesMass)
-    }
+    }, [postsOnPageLimit])
     useEffect(() =>{
         setLoading(true)
         getPosts()
         getPages()
-    }, [currentPage, postsOnPageLimit])
+    }, [currentPage, postsOnPageLimit, getPages, getPosts])
 
     const delPost = (id) =>{
         setPosts(posts.filter(e=> e.id !== id));
@@ -41,12 +43,15 @@ function App() {
     const addPost = (post) =>{
         setPosts([...posts,{id: Date.now(), ...post}])
     }
+
     const changePostsOnPageLimit = (event) =>{
         setPostsOnPageLimit(event.target.value)
     }
+
     const changeCurrentPage = (event) =>{
         setCurrentPage(event.target.value)
     }
+
     return (
         <div>
             <AquamarineSelect value={currentPage} selects={pages} onChange={changeCurrentPage}/>
@@ -54,6 +59,8 @@ function App() {
             <AddForm addPost={addPost}/>
             {isLoading ? <div>Загрузка</div> : <PostsBody value={posts} del={delPost}/>}
             {posts.length === 0 && !isLoading ? <div>Нет постов</div> : null}
+            <input value={modalNumber} onChange={event => setModalNumber(event.target.value)}/>
+            {modalNumber ? <ModalView post={posts[modalNumber-1]} del={delPost}/>:null}
         </div>
 
     );
