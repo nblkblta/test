@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '../UI/Button'
 
-const Post = ({post, del, onClick, theme}) => {
+const Post = ({post, del, onClick, theme, language }) => {
 
     return (
         <div className={theme.post}
@@ -11,7 +11,7 @@ const Post = ({post, del, onClick, theme}) => {
             <div className={theme.body}>{post.body}</div>
             <Button theme={theme}
                     onClick={(event)=>{event.stopPropagation();del(post.id)}}>
-                delete</Button>
+                {language.delete}</Button>
         </div>
     );
 };

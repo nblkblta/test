@@ -6,16 +6,23 @@ import AquaMarineTheme from "./Styles/AquaMarineStyle.module.css";
 import BlackTheme from "./Styles/BlackStyle.module.css";
 import ModalView from "./Components/ModalView";
 import Select from "./UI/Select";
+import {LegendRus, LegendEng} from "./Content/Languages"
 
 function App() {
+
+    const Languages = {Русский: LegendRus, English: LegendEng}
+    const Themes = {Aquamarine: AquaMarineTheme, Black: BlackTheme}
+
+
     const [posts, setPosts] = useState([]);
     const [isLoading, setLoading] = useState(true)
     const [postsOnPageLimit, setPostsOnPageLimit] = useState(10)
     const [currentPage, setCurrentPage] = useState(1)
     const [pages, setPages] = useState([1,2,3,4,5,6,7,8,9,10])
     const [modalNumber, setModalNumber] = useState(0)
-    const Themes = [AquaMarineTheme, BlackTheme]
-    const [theme, setTheme] = useState(Themes[0])
+    const [theme, setTheme] = useState(Themes["Aquamarine"])
+    const [Language, setLanguage] = useState(Languages["Русский"])
+
 
     const getPosts = useCallback(()=>{
         PlaceHolderAPI.fetchPosts(postsOnPageLimit, currentPage)
@@ -50,15 +57,23 @@ function App() {
     const changeCurrentPage = (event) =>{
         setCurrentPage(event.target.value)
     }
+
     const hideModal = () => {
         setModalNumber(0)
     }
+
     const showModal = (id) =>{
         setModalNumber(id)
     }
+
     const changeTheme = (event) =>{
-        setTheme(Themes[event.target.value-1])
+        setTheme(Themes[event.target.value])
     }
+
+    const changeLanguage = (event) =>{
+        setLanguage(Languages[event.target.value])
+    }
+
 
     return (
         <div>
@@ -66,20 +81,28 @@ function App() {
                 ? <div>Загрузка</div>
                 : <div>
                     <PostsBody theme={theme}
-                                  value={posts}
-                                  del={delPost}
-                                  showModal={showModal}/>
+                               value={posts}
+                               del={delPost}
+                               showModal={showModal}
+                               language={Language}/>
                     <Select theme={theme}
                             value={currentPage}
                             selects={pages}
+                            children={Language.page}
                             onChange={changeCurrentPage}/>
                     <Select theme={theme}
                             value={postsOnPageLimit}
                             selects={[5,10,20,50]}
-                            onChange={changePostsOnPageLimit}/>
+                            onChange={changePostsOnPageLimit}
+                            children={Language.postsOnPageLimit}/>
                     <Select theme={theme}
-                            selects={[1,2]}
-                            onChange={changeTheme}/>
+                            selects={Object.keys(Themes)}
+                            onChange={changeTheme}
+                            children={Language.theme}/>
+                    <Select theme={theme}
+                            selects={Object.keys(Languages)}
+                            onChange={changeLanguage}
+                            children={Language.language}/>
                 </div>
             }
 
@@ -91,7 +114,8 @@ function App() {
                 ? <ModalView theme={theme}
                              post={posts[modalNumber-1]}
                              onClick={hideModal}
-                             del={delPost}/>
+                             del={delPost}
+                             language={Language}/>
                 : null}
         </div>
 
