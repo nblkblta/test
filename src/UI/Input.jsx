@@ -1,5 +1,5 @@
 import style from '../Styles/AquamarineInput.module.css'
-const AquamarineInput = ({placeholder, onChange,value}) => {
+const Input = ({placeholder, onChange,value}) => {
 
     return (
         <input className={style.aquaMarineInput} value={value} onChange={event => onChange(event.target.value)}
@@ -7,4 +7,4 @@ const AquamarineInput = ({placeholder, onChange,value}) => {
     );
 };
 
-export default AquamarineInput;
+export default Input;

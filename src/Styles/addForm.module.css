@@ -1,0 +1,8 @@
+.container{
+    width: 80vw;
+    align-self: center;
+    border: 2px aquamarine solid;
+    border-radius: 20px;
+    justify-content: center;
+    display: flex;
+}

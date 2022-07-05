@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
-import AquamarineButton from '../UI/AquamarineButton'
-import AquamarineInput from '../UI/AquamarineInput'
+import addForm from "../Styles/addForm.module.css"
+import Button from "../UI/Button";
+import Input from "../UI/Input";
 
-const AddForm = ({addPost}) => {
+
+const AddForm = ({addPost, theme}) => {
     const [form, setForm] = useState({title: ``, body: ``})
     const setTitle = (title) => {
         setForm({...form, title: title})
@@ -15,14 +17,19 @@ const AddForm = ({addPost}) => {
         setForm({title: ``, body: ``})
     }
     return (
-        <div>
-            <AquamarineInput value={form.title}
-                             onChange={setTitle}
-                             placeholder={`Введите заголовок`}/>
-            <AquamarineInput value={form.body}
-                             onChange={setBody}
-                             placeholder={`Введите описание`}/>
-            <AquamarineButton onClick={createPost}>add</AquamarineButton>
+        <div className={addForm.container}>
+            <Input style={theme}
+                   value={form.title}
+                   onChange={setTitle}
+                   placeholder={`Введите заголовок`}/>
+            <Input style={theme}
+                   value={form.body}
+                   onChange={setBody}
+                   placeholder={`Введите описание`}/>
+            <Button style={theme}
+                    onClick={createPost}>
+                add
+            </Button>
         </div>
     );
 };

@@ -1,14 +1,17 @@
 import React from 'react';
-import style from '../Styles/Post.module.css'
-import AquamarineButton from '../UI/AquamarineButton'
-const Post = ({post, del}) => {
+import Button from '../UI/Button'
+
+const Post = ({post, del, onClick, theme}) => {
 
     return (
-        <div className={style.post}  >
-            <div>{post.id}</div>
-            <div>{post.title}</div>
-            <div>{post.body}</div>
-            <AquamarineButton onClick={()=>del(post.id)}>delete</AquamarineButton>
+        <div className={theme.post}
+             onClick={()=>onClick(post.id)} >
+            <div className={theme.id}>{post.id}</div>
+            <div className={theme.title}>{post.title}</div>
+            <div className={theme.body}>{post.body}</div>
+            <Button theme={theme}
+                    onClick={(event)=>{event.stopPropagation();del(post.id)}}>
+                delete</Button>
         </div>
     );
 };
