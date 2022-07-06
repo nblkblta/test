@@ -1,18 +1,14 @@
 import './App.css';
-import PostsBody from "./Components/PostsBody";
+
 import React, {useCallback, useEffect, useState} from "react";
 import PlaceHolderAPI from "./API/PlaceHolderAPI";
-import AquaMarineTheme from "./Styles/AquaMarineStyle.module.css";
-import BlackTheme from "./Styles/BlackStyle.module.css";
-import ModalView from "./Components/ModalView";
+import PostsBody from "./Components/PostsBody";
 import Select from "./UI/Select";
-import {LegendRus, LegendEng} from "./Content/Languages"
+import ModalView from "./Components/ModalView";
+import {Languages} from "./Content/Languages"
+import {Themes} from "./Content/Themes"
 
 function App() {
-
-    const Languages = {Русский: LegendRus, English: LegendEng}
-    const Themes = {Aquamarine: AquaMarineTheme, Black: BlackTheme}
-
 
     const [posts, setPosts] = useState([]);
     const [isLoading, setLoading] = useState(true)
@@ -21,8 +17,7 @@ function App() {
     const [pages, setPages] = useState([1,2,3,4,5,6,7,8,9,10])
     const [modalNumber, setModalNumber] = useState(0)
     const [theme, setTheme] = useState(Themes["Aquamarine"])
-    const [Language, setLanguage] = useState(Languages["Русский"])
-
+    const [language, setLanguage] = useState(Languages["Русский"])
 
     const getPosts = useCallback(()=>{
         PlaceHolderAPI.fetchPosts(postsOnPageLimit, currentPage)
@@ -77,48 +72,47 @@ function App() {
 
     return (
         <div>
+            <h1>{language.posts}</h1>
             {isLoading
-                ? <div>Загрузка</div>
+                ? <div>{language.loading}</div>
                 : <div>
                     <PostsBody theme={theme}
                                value={posts}
                                del={delPost}
                                showModal={showModal}
-                               language={Language}/>
+                               language={language}/>
                     <Select theme={theme}
                             value={currentPage}
                             selects={pages}
-                            children={Language.page}
+                            children={language.page}
                             onChange={changeCurrentPage}/>
                     <Select theme={theme}
                             value={postsOnPageLimit}
                             selects={[5,10,20,50]}
                             onChange={changePostsOnPageLimit}
-                            children={Language.postsOnPageLimit}/>
+                            children={language.postsOnPageLimit}/>
                     <Select theme={theme}
                             selects={Object.keys(Themes)}
                             onChange={changeTheme}
-                            children={Language.theme}/>
+                            children={language.theme}/>
                     <Select theme={theme}
                             selects={Object.keys(Languages)}
                             onChange={changeLanguage}
-                            children={Language.language}/>
+                            children={language.language}/>
                 </div>
             }
 
             {posts.length === 0 && !isLoading
-                ? <div>Нет постов</div>
+                ? <div>{language.noPosts}</div>
                 : null}
 
             {modalNumber
                 ? <ModalView theme={theme}
                              post={posts[modalNumber-1]}
                              onClick={hideModal}
-                             del={delPost}
-                             language={Language}/>
+                             language={language}/>
                 : null}
         </div>
-
     );
 }
 

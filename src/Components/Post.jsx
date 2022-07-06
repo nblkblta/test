@@ -1,17 +1,26 @@
 import React from 'react';
 import Button from '../UI/Button'
 
-const Post = ({post, del, onClick, theme, language }) => {
+const Post = ({post, buttonClick, onClick, theme, language, variant}) => {
 
     return (
         <div className={theme.post}
              onClick={()=>onClick(post.id)} >
-            <div className={theme.id}>{post.id}</div>
-            <div className={theme.title}>{post.title}</div>
-            <div className={theme.body}>{post.body}</div>
-            <Button theme={theme}
-                    onClick={(event)=>{event.stopPropagation();del(post.id)}}>
-                {language.delete}</Button>
+            <div>
+                <strong>{post.id + ". " + post.title}</strong>
+                <div>{post.body}</div>
+            </div>
+            {variant==='inPostBody'
+                ?<Button theme={theme}
+                         onClick={(event)=>{event.stopPropagation();buttonClick(post.id)}}>
+                    {language.delete}</Button>
+                : null}
+            {variant==='inModal'
+                ?<Button theme={theme}
+                         onClick={buttonClick}>
+                    {language.copy}</Button>
+                : null}
+
         </div>
     );
 };

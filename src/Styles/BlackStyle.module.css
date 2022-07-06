@@ -12,7 +12,7 @@
     border: 2px solid black;
 }
 .select{
-
+    margin: 5px 5px 5px 5px;
 }
 .container{
     border: 2px solid black;
@@ -21,18 +21,11 @@
 }
 
 .post{
-    border: 2px solid black;
-    margin: 5px 5px 5px 5px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 15px 15px 15px;
     cursor: pointer;
-}
-
-.id{
-}
-
-.title{
-
-}
-
-.body{
-
+    align-items: center;
+    border: 2px solid black;
 }
