@@ -40,7 +40,7 @@ function App() {
         setLoading(true);
         getPosts();
         getPages();
-    }, [currentPage, postsOnPageLimit]);
+    }, [currentPage, postsOnPageLimit, getPosts, getPages]);
 
     const delPost = (id) => {
         setPosts(posts.filter((e) => e.id !== id));
