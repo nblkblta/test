@@ -11,7 +11,7 @@ const LegendRus = {delete:"Удалить",
 
 const LegendEng = {delete:"Delete",
     postsOnPageLimit: "Post on Page",
-    page: "Page",
+    page: "Pages",
     copy: "Copy",
     language: "Language",
     theme: "Theme",
